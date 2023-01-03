@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+final auth = FirebaseAuth.instance;
 
 final firestore = FirebaseFirestore.instance;
 
@@ -11,6 +13,7 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: MyApp(),
   ));
 }
@@ -39,6 +42,16 @@ class Shop extends StatefulWidget {
 class _ShopState extends State<Shop> {
 
   getData() async{
+    try {
+      var result = await auth.createUserWithEmailAndPassword(
+          email: "idc1234@test.com",
+          password: "123456",
+      );
+      print(result.user);
+    } catch (e) {
+      print(e);
+    } 
+
     var result = await firestore.collection('product').get();
     for (var doc in result.docs) {
       print(doc['name']);
