@@ -3,71 +3,106 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:bykakrentalcenter/promotionscreen.dart';
+import 'package:bykakrentalcenter/Account/login.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MaterialApp(
+    title: '바이각 슈트 렌탈센터',
     debugShowCheckedModeBanner: false,
-    home: MyApp(),
+    theme: ThemeData(
+      fontFamily: 'Lineseed',
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: Color(0xff205B48),
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+      ),
+    ),
+    home: ClickLogIn(),
+    localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate
+    ],
+    supportedLocales: [
+      const Locale('en', 'US'),
+      const Locale('ko', 'KO'),
+    ],
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// void main() async{
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   runApp(MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     home: MyApp(),
+//   ));
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Shop(),
-      ),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Shop(),
+//       ),
+//     );
+//   }
+// }
 
 
-class Shop extends StatefulWidget {
-  const Shop({super.key});
+// class Shop extends StatefulWidget {
+//   const Shop({super.key});
 
-  @override
-  State<Shop> createState() => _ShopState();
-}
+//   @override
+//   State<Shop> createState() => _ShopState();
+// }
 
-class _ShopState extends State<Shop> {
+// class _ShopState extends State<Shop> {
 
-  getData() async{
-    try {
-      var result = await auth.createUserWithEmailAndPassword(
-          email: "idc1234@test.com",
-          password: "123456",
-      );
-      print(result.user);
-    } catch (e) {
-      print(e);
-    } 
+//   getData() async{
+//     try {
+//       var result = await auth.createUserWithEmailAndPassword(
+//           email: "idc1234@test.com",
+//           password: "123456",
+//       );
+//       print(result.user);
+//     } catch (e) {
+//       print(e);
+//     } 
 
-    var result = await firestore.collection('product').get();
-    for (var doc in result.docs) {
-      print(doc['name']);
-    }
-  }
+//     var result = await firestore.collection('product').get();
+//     for (var doc in result.docs) {
+//       print(doc['name']);
+//     }
+//   }
   
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     getData();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('샵페이지'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: Text('샵페이지'),
+//     );
+//   }
+// }

@@ -165,7 +165,7 @@ class UserMyPageState extends StatelessWidget {
               width: double.infinity,
               height: 80,
               child: Container(
-                child: UserLogInState()
+                child: LogOutState()
               )
             )
           ),
