@@ -9,7 +9,6 @@ import 'package:bykakrentalcenter/TabBarView/mypage.dart';
 import 'package:bykakrentalcenter/TabBarView/bookhistory.dart';
 import 'package:bykakrentalcenter/TabBarView/shoppingbag.dart';
 import 'package:bykakrentalcenter/inquiry.dart';
-// import 'package:get/get.dart';
 
 class TabBarScreen extends StatefulWidget {
   const TabBarScreen({super.key});
@@ -89,7 +88,8 @@ class _TabBarScreenState extends State<TabBarScreen> {
               Tab(
                 icon: Icon(Icons.account_circle, size: 30),
                 text: '마이페이지',
-              )
+              ),
+              
             ],
           )
         ),

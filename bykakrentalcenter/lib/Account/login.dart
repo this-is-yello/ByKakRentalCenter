@@ -52,22 +52,33 @@ class _LogInState extends State<LogIn> {
   var inputId = TextEditingController();
   var inputPassWord = TextEditingController();
 
+  // void changeName() async{
+  //   await auth.currentUser!.updateDisplayName('이태우');
+  // }
+
   getData() async{
     try {
-      var result = await auth.createUserWithEmailAndPassword(
-          email: "idc1234@test.com",
-          password: "123456",
-      );
-      print(result.user);
+      // var resultAccount = await auth.createUserWithEmailAndPassword(
+      //     email: "idc1234@test.com",
+      //     password: "123456",
+      // );
+
+      // changeName();
+
+      print(auth.currentUser?.displayName.toString());
     } catch (e) {
       print(e);
     } 
 
-    var result = await firestore.collection('product').get();
-    for (var doc in result.docs) {
-      print(doc['name']);
+    var resultGrade = await firestore.collection('account').get();
+    print(resultGrade.docs[1]['grade']);
+
+    var resultProduct = await firestore.collection('product').get();
+    for (var doc in resultProduct.docs) {
+      print(doc['color']);
     }
   }
+
   
   @override
   void initState() {
@@ -75,12 +86,21 @@ class _LogInState extends State<LogIn> {
     getData();
   }
 
+  inputAccountState() {
+    if(auth.currentUser?.uid == null) {
+      print('아이디, 비밀번호를 입력해라.');
+    } else {
+      print(auth.currentUser?.displayName);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Center(child: Text('로그인', style: TextStyle(color: Colors.black))),
+        title: Text('로그인', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -164,11 +184,7 @@ class _LogInState extends State<LogIn> {
                     } catch (e) {
                       print(e);
                     }
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => WebMain()));
-                    // try {
-                    // } catch (e) {
-                    //   print(e);
-                    // } 
+                    inputAccountState();
                     print(auth.currentUser?.uid);
                   },
                 ),

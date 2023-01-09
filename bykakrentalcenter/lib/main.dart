@@ -30,7 +30,7 @@ void main() async{
         showUnselectedLabels: true,
       ),
     ),
-    home: ClickLogIn(),
+    home: WebMain(),
     localizationsDelegates: [
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate
