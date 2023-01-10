@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:bykakrentalcenter/main.dart';
 import 'package:bykakrentalcenter/todownload.dart';
 import 'package:bykakrentalcenter/promotionscreen.dart';
+import 'package:bykakrentalcenter/Account/signup.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
@@ -52,9 +53,20 @@ class _LogInState extends State<LogIn> {
   var inputId = TextEditingController();
   var inputPassWord = TextEditingController();
 
-  // void changeName() async{
-  //   await auth.currentUser!.updateDisplayName('이태우');
-  // }
+  inputAccountState() async{
+    if(inputId == null || inputPassWord == null) {
+      print('아이디, 비밀번호를 입력해라.');
+    } else if (auth.currentUser?.uid == null) {
+      print('아이디, 비밀번호를 확인해라.');
+    } else {
+      print(auth.currentUser?.displayName.toString());
+      print(auth.currentUser?.email);
+      print(auth.currentUser?.uid);
+      print('로그인 완료');
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
+    }
+  }
+
 
   getData() async{
     try {
@@ -62,38 +74,17 @@ class _LogInState extends State<LogIn> {
       //     email: "idc1234@test.com",
       //     password: "123456",
       // );
-
-      // changeName();
-
-      print(auth.currentUser?.displayName.toString());
     } catch (e) {
       print(e);
-    } 
-
-    var resultGrade = await firestore.collection('account').get();
-    print(resultGrade.docs[1]['grade']);
-
-    var resultProduct = await firestore.collection('product').get();
-    for (var doc in resultProduct.docs) {
-      print(doc['color']);
     }
   }
 
-  
   @override
   void initState() {
     super.initState();
     getData();
   }
 
-  inputAccountState() {
-    if(auth.currentUser?.uid == null) {
-      print('아이디, 비밀번호를 입력해라.');
-    } else {
-      print(auth.currentUser?.displayName);
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +140,9 @@ class _LogInState extends State<LogIn> {
                   children: [
                     InkWell(
                       child: Text('회원가입'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ClickSignUp()));
+                      },
                     ),
                     Padding(padding: EdgeInsets.all(4)),
                     Text('/'),
@@ -185,7 +178,6 @@ class _LogInState extends State<LogIn> {
                       print(e);
                     }
                     inputAccountState();
-                    print(auth.currentUser?.uid);
                   },
                 ),
               ),
@@ -233,10 +225,7 @@ class _LogInState extends State<LogIn> {
                       borderRadius: BorderRadius.circular(30)
                     ),
                     child: InkWell(
-                      onTap: () async{
-                        await auth.signOut(); 
-                        print(auth.currentUser?.uid);
-                      },
+                      onTap: () async{},
                     ),
                   ),
                   Container(

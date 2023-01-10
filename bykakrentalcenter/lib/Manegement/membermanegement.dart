@@ -1,9 +1,17 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bykakrentalcenter/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:bykakrentalcenter/todownload.dart';
 import 'package:bykakrentalcenter/FromMyPage/givepoint.dart';
+
+final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
+
 
 class ClickMember extends StatelessWidget {
   const ClickMember({super.key});
@@ -29,9 +37,14 @@ class ClickMember extends StatelessWidget {
   }
 }
 
-class MemberManege extends StatelessWidget {
+class MemberManege extends StatefulWidget {
   const MemberManege({super.key});
 
+  @override
+  State<MemberManege> createState() => _MemberManegeState();
+}
+
+class _MemberManegeState extends State<MemberManege> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

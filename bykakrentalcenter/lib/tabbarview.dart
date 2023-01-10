@@ -34,7 +34,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           actions: [
             IconButton(
               icon: Icon(Icons.shopping_bag, size: 30, color: Colors.black),
-              onPressed: () {
+              onPressed: () async{
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ClickShoppingBag()));
               },
             )

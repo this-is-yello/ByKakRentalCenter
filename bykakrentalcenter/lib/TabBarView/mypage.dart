@@ -1,20 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bykakrentalcenter/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:bykakrentalcenter/promotionscreen.dart';
 import 'package:bykakrentalcenter/Account/login.dart';
-
 import 'package:bykakrentalcenter/TabBarView/bookhistory.dart';
 import 'package:bykakrentalcenter/FromMyPage/mysize.dart';
 import 'package:bykakrentalcenter/FromMyPage/mypoint.dart';
 import 'package:bykakrentalcenter/FromMyPage/calender.dart';
-
 import 'package:bykakrentalcenter/Manegement/bookmanegement.dart';
 import 'package:bykakrentalcenter/Manegement/membermanegement.dart';
 import 'package:bykakrentalcenter/Manegement/productmanegement.dart';
 import 'package:bykakrentalcenter/Manegement/inquirymanegement.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
@@ -29,21 +31,34 @@ class Mypage extends StatefulWidget {
 
 class _MypageState extends State<Mypage> {
 
+  bool loginState = false;
+  bool authGrade = false;
+
+  // void changeName() async{
+  //   await auth.currentUser!.updateDisplayName('유저바이각');
+  // }
+
   getData() async{
-    var resultGrade = await firestore.collection('account').doc('f5OzG53GsRP8V5pK6wqo').get();
-    print(resultGrade['grade']);
+    // changeName();
 
-    // logInState() {
-    //   if(auth.currentUser?.email == resultGrade['id'] && resultGrade['grade'] == 'admin') {
-    //     Center(child: AdminMyPage());
-    //   } else if (auth.currentUser?.uid == null) {
-    //     Center(child: LogOutMyPage());
-    //   } else {
-    //     Center(child: UserMyPage());
-    //   }
-    // }
+    if (auth.currentUser?.uid == null) {
+      print('no login');
+    } else if (auth.currentUser?.uid.isNotEmpty == true) {
+      setState(() {
+        loginState = true;
+      });
+      print('yes login');
+      
+      var resultAdmin = await firestore.collection('adminAccount').get();
 
-    // logInState();
+      for (int i = 0; i <= resultAdmin.docs.length-1; i++) {
+        if (resultAdmin.docs[i]['id'] == auth.currentUser?.email) {
+          setState(() {
+            authGrade = true;
+          });
+        }
+      }
+    }
   }
 
   @override
@@ -56,7 +71,7 @@ class _MypageState extends State<Mypage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: LogOutMyPage(),
+      body: loginState ? authGrade ? AdminMyPage() : UserMyPage() : LogOutMyPage()
     );
   }
 }
@@ -450,6 +465,18 @@ class _UserMyPageState extends State<UserMyPage> {
             )
           ),
         ),
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          sliver: SliverToBoxAdapter(
+            child: TextButton(
+              child: Text('로그아웃', style: TextStyle(color: Colors.grey, fontSize: 20)),
+              onPressed: () async{
+                await auth.signOut();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
+              },
+            ),
+          ),
+        )
       ],
     );
   }
@@ -616,6 +643,18 @@ class _AdminMyPageState extends State<AdminMyPage> {
             )
           ),
         ),
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          sliver: SliverToBoxAdapter(
+            child: TextButton(
+              child: Text('로그아웃', style: TextStyle(color: Colors.grey, fontSize: 20)),
+              onPressed: () async{
+                await auth.signOut();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
+              },
+            ),
+          ),
+        )
       ]
     );
   }
