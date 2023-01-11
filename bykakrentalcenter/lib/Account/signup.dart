@@ -1,3 +1,5 @@
+import 'package:bykakrentalcenter/Account/login.dart';
+import 'package:bykakrentalcenter/promotionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bykakrentalcenter/firebase_options.dart';
@@ -5,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:bykakrentalcenter/todownload.dart';
+
+final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 
 class ClickSignUp extends StatelessWidget {
@@ -46,6 +51,19 @@ class _SignUpState extends State<SignUp> {
   var inputNewName = TextEditingController();
   var inputNewPhone = TextEditingController();
 
+  void letsSignUp() async{
+    final result = await auth.createUserWithEmailAndPassword(
+      email: inputNewId.text,
+      password: inputNewPassWord.text,
+    );
+    await auth.currentUser?.updateDisplayName(inputNewName.text);
+  }
+
+  addAccount() {
+    firestore.collection('account').doc(inputNewId.text).set({'grade' : 'user', 'name' : inputNewName.text, 'phone' : inputNewPhone.text, 'id' : inputNewId.text, 'password' : inputNewPassWord.text});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +75,30 @@ class _SignUpState extends State<SignUp> {
       ),
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.only(top: 80, bottom: 20),
+              child: Center(child: Text('by覺 렌탈센터', style: TextStyle(fontSize: 40, color: Colors.black, fontWeight: FontWeight.w700))),
+            ),
+          ),
           SliverPadding(
-            padding: EdgeInsets.all(32),
+            padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+            sliver: SliverToBoxAdapter(
+              child: Container(
+                width: double.infinity,
+                child: Text('회원정보', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700))
+              )
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             sliver: SliverToBoxAdapter(
               child: TextField(
                 controller: inputNewName,
                 decoration: InputDecoration(
                   hintText: '이름',
+                  labelText: '이름',
+                  floatingLabelStyle: TextStyle(color: Color(0xFF205B48)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
                 ),
@@ -75,8 +110,11 @@ class _SignUpState extends State<SignUp> {
             sliver: SliverToBoxAdapter(
               child: TextField(
                 controller: inputNewPhone,
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: '전화번호',
+                  labelText: '전화번호',
+                  floatingLabelStyle: TextStyle(color: Color(0xFF205B48)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
                 ),
@@ -84,33 +122,59 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
           SliverPadding(
+            padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
+            sliver: SliverToBoxAdapter(
+              child: Container(
+                width: double.infinity,
+                child: Text('계정정보', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700))
+              )
+            ),
+          ),
+          SliverPadding(
             padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             sliver: SliverToBoxAdapter(
-              child: TextFormField(
-                controller: inputNewId,
-                decoration: InputDecoration(
-                  // labelText: '회원가입할 이메일을 입력해주세요.',
-                  hintText: '이메일',
-                  border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
+              child: Container(
+                child: TextFormField(
+                  controller: inputNewId,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: '이메일',
+                    labelText: '이메일',
+                    floatingLabelStyle: TextStyle(color: Color(0xFF205B48)),
+                    border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
+                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
+                  ),
                 ),
-                validator: (value) {
-                  if (inputNewId == null) {
-                    return "이메일을 입력해주세요";
-                  }
-                  return null;
-                },
               ),
             ),
           ),
+          // SliverPadding(
+          //   padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
+          //   sliver: SliverToBoxAdapter(
+          //     child: Container(
+          //       height: 60,
+          //       child: ElevatedButton(
+          //         child: Text('이메일 인증'),
+          //         style: ElevatedButton.styleFrom(
+          //           backgroundColor: Color(0xFF205B48)
+          //         ),
+          //         onPressed: () {
+          //         },
+          //       ),
+          //     ),
+          //   ),
+          // ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             sliver: SliverToBoxAdapter(
               child: TextField(
                 controller: inputNewPassWord,
+                keyboardType: TextInputType.number,
+                obscureText: true,
                 decoration: InputDecoration(
-                  // labelText: '회원가입할 비밀번호을 입력해주세요.',
                   hintText: '비밀번호',
+                  labelText: '비밀번호',
+                  floatingLabelStyle: TextStyle(color: Color(0xFF205B48)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
                 ),
@@ -122,9 +186,12 @@ class _SignUpState extends State<SignUp> {
             sliver: SliverToBoxAdapter(
               child: TextField(
                 controller: inputNewPassWordConfirm,
+                keyboardType: TextInputType.number,
+                obscureText: true,
                 decoration: InputDecoration(
-                  // labelText: '비밀번호를 한번 더 입력해주세요.',
                   hintText: '비밀번호 확인',
+                  labelText: '비밀번호 확인',
+                  floatingLabelStyle: TextStyle(color: Color(0xFF205B48)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.circular(5)),
                   focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48)), borderRadius: BorderRadius.circular(5)),
                 ),
@@ -134,9 +201,19 @@ class _SignUpState extends State<SignUp> {
           SliverPadding(
             padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             sliver: SliverToBoxAdapter(
-              child: ElevatedButton(
-                child: Text('가입하기'),
-                onPressed: () {},
+              child: Container(
+                height: 60,
+                child: ElevatedButton(
+                  child: Text('가입하기'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF205B48)
+                  ),
+                  onPressed: () {
+                    letsSignUp();
+                    addAccount();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => WebMain()));
+                  },
+                ),
               ),
             ),
           )

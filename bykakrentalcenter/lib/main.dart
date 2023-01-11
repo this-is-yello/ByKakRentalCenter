@@ -25,7 +25,7 @@ void main() async{
       fontFamily: 'Lineseed',
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
-        selectedItemColor: Color(0xff205B48),
+        selectedItemColor: Color(0xFF205B48),
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
       ),

@@ -21,7 +21,6 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
-
 class Mypage extends StatefulWidget {
   const Mypage({super.key});
 
@@ -32,14 +31,29 @@ class Mypage extends StatefulWidget {
 class _MypageState extends State<Mypage> {
 
   bool loginState = false;
-  bool authGrade = false;
+  bool adminGrade = false;
+  var dbPhone;
 
-  // void changeName() async{
-  //   await auth.currentUser!.updateDisplayName('유저바이각');
-  // }
+  emailCheck() async{ // 핸드폰 번호 띄우기 위해 // 마이페이지 정보 띄울 때도 필요할까?
 
+    var checkEmail = await firestore.collection('account').get();
+
+    for (int i = 0; i <= checkEmail.docs.length-1; i++) {
+      if (checkEmail.docs[i]['id'] == auth.currentUser?.email) {
+        setState(() {
+          dbPhone = checkEmail.docs[i]['phone'];
+        });
+        print(dbPhone);
+      }
+    }
+  }
+  
   getData() async{
-    // changeName();
+
+    emailCheck();
+
+    var resultAdmin = await firestore.collection('adminAccount').get();
+    var resultAccount = await firestore.collection('account').get();
 
     if (auth.currentUser?.uid == null) {
       print('no login');
@@ -49,12 +63,10 @@ class _MypageState extends State<Mypage> {
       });
       print('yes login');
       
-      var resultAdmin = await firestore.collection('adminAccount').get();
-
-      for (int i = 0; i <= resultAdmin.docs.length-1; i++) {
-        if (resultAdmin.docs[i]['id'] == auth.currentUser?.email) {
+      for(int i = 0; i<=resultAccount.docs.length-1; i++) {
+        if(resultAccount.docs[i]['id'] == auth.currentUser?.email && resultAccount.docs[i]['grade'] == 'admin') {
           setState(() {
-            authGrade = true;
+            adminGrade = true;
           });
         }
       }
@@ -71,11 +83,10 @@ class _MypageState extends State<Mypage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: loginState ? authGrade ? AdminMyPage() : UserMyPage() : LogOutMyPage()
+      body: loginState ? adminGrade ? AdminMyPage(dbPhone : dbPhone) : UserMyPage(dbPhone : dbPhone) : LogOutMyPage()
     );
   }
 }
-
 
 // --------------------------------- 로그아웃 마이페이지 --------------------------------------------
 class LogOutMyPage extends StatelessWidget {
@@ -267,14 +278,11 @@ class LogOutMyPage extends StatelessWidget {
 }
 
 // --------------------------------- 유저 마이페이지 --------------------------------------------
-class UserMyPage extends StatefulWidget {
-  const UserMyPage({super.key});
+class UserMyPage extends StatelessWidget {
+  const UserMyPage({super.key, this.dbPhone});
 
-  @override
-  State<UserMyPage> createState() => _UserMyPageState();
-}
+  final dbPhone;
 
-class _UserMyPageState extends State<UserMyPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -315,7 +323,7 @@ class _UserMyPageState extends State<UserMyPage> {
                             child: Center(child: Text('${auth.currentUser?.displayName.toString()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700))),
                           ),
                           Container(
-                            child: Center(child: Text('010-1122-3344', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
+                            child: Center(child: Text('${dbPhone}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
                           ),
                         ],
                       ),
@@ -466,10 +474,10 @@ class _UserMyPageState extends State<UserMyPage> {
           ),
         ),
         SliverPadding(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 32),
           sliver: SliverToBoxAdapter(
             child: TextButton(
-              child: Text('로그아웃', style: TextStyle(color: Colors.grey, fontSize: 20)),
+              child: Text('로그아웃', style: TextStyle(color: Colors.red, fontSize: 20)),
               onPressed: () async{
                 await auth.signOut();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
@@ -483,14 +491,11 @@ class _UserMyPageState extends State<UserMyPage> {
 }
 
 // --------------------------------- 관리자 마이페이지 --------------------------------------------
-class AdminMyPage extends StatefulWidget {
-  const AdminMyPage({super.key});
+class AdminMyPage extends StatelessWidget {
+  const AdminMyPage({super.key, this.dbPhone});
 
-  @override
-  State<AdminMyPage> createState() => _AdminMyPageState();
-}
+  final dbPhone;
 
-class _AdminMyPageState extends State<AdminMyPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -531,7 +536,7 @@ class _AdminMyPageState extends State<AdminMyPage> {
                             child: Center(child: Text('${auth.currentUser?.displayName.toString()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700))),
                           ),
                           Container(
-                            child: Center(child: Text('010-1122-3344', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
+                            child: Center(child: Text('${dbPhone}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
                           ),
                         ],
                       ),
@@ -644,10 +649,10 @@ class _AdminMyPageState extends State<AdminMyPage> {
           ),
         ),
         SliverPadding(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 32),
           sliver: SliverToBoxAdapter(
             child: TextButton(
-              child: Text('로그아웃', style: TextStyle(color: Colors.grey, fontSize: 20)),
+              child: Text('로그아웃', style: TextStyle(color: Colors.red, fontSize: 20)),
               onPressed: () async{
                 await auth.signOut();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
