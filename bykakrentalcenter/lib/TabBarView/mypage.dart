@@ -12,6 +12,7 @@ import 'package:bykakrentalcenter/TabBarView/bookhistory.dart';
 import 'package:bykakrentalcenter/FromMyPage/mysize.dart';
 import 'package:bykakrentalcenter/FromMyPage/mypoint.dart';
 import 'package:bykakrentalcenter/FromMyPage/calender.dart';
+import 'package:bykakrentalcenter/FromMyPage/userinfo.dart';
 import 'package:bykakrentalcenter/Manegement/bookmanegement.dart';
 import 'package:bykakrentalcenter/Manegement/membermanegement.dart';
 import 'package:bykakrentalcenter/Manegement/productmanegement.dart';
@@ -49,7 +50,6 @@ class _MypageState extends State<Mypage> {
   }
   
   getData() async{
-
     emailCheck();
 
     var resultAdmin = await firestore.collection('adminAccount').get();
@@ -332,8 +332,7 @@ class UserMyPage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    // 회원정보수정
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ClickLogIn()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ClickProfile()));
                   },
                 )
               )
@@ -545,8 +544,7 @@ class AdminMyPage extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    // 회원정보수정
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ClickLogIn()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ClickProfile()));
                   },
                 )
               )

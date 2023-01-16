@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bykakrentalcenter/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
 import 'package:bykakrentalcenter/todownload.dart';
+
+final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class ClickGivePoint extends StatelessWidget {
   const ClickGivePoint({super.key});
@@ -28,8 +35,45 @@ class ClickGivePoint extends StatelessWidget {
 }
 
 
-class GivePoint extends StatelessWidget {
+class GivePoint extends StatefulWidget {
   const GivePoint({super.key});
+
+  @override
+  State<GivePoint> createState() => _GivePointState();
+}
+
+class _GivePointState extends State<GivePoint> {
+
+  var inputGivePoint = TextEditingController();
+  var inputGivePointContent = TextEditingController();
+  var inputUsePoint = TextEditingController();
+
+  var dbName;
+  var dbPoint;
+  
+  var checkEmail;
+  var memberLength; 
+  
+  int i = 0;
+
+  emailCheck() async{
+
+    checkEmail = await firestore.collection('account').get();
+    memberLength = checkEmail.docs.length;
+
+    for (i = 0; i <= checkEmail.docs.length-1; i++) {
+      setState(() {
+        dbName = checkEmail.docs[i]['name'].toString();
+        dbPoint = checkEmail.docs[i]['point'].toString();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    emailCheck();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +82,7 @@ class GivePoint extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Center(child: Text('회원관리', style: TextStyle(color: Colors.black))),
+        title: Text('회원관리', style: TextStyle(color: Colors.black)),
       ),
       body: ListView(
         children: [
@@ -72,8 +116,8 @@ class GivePoint extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('바이각', style: TextStyle(fontSize: 16)),
-                    Text('1000P', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700))
+                    Text(dbName, style: TextStyle(fontSize: 16)),
+                    Text(dbPoint, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700))
                   ],
                 ),
               ],
@@ -101,15 +145,26 @@ class GivePoint extends StatelessWidget {
                   width: double.infinity,
                   child: Text('포인트 지급', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700)),
                 ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: inputGivePointContent,
+                    decoration: InputDecoration(
+                      hintText: '포인트 지급 내용',
+                      border: OutlineInputBorder(borderSide: BorderSide(width: 1)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48))),
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     Flexible(
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        // controller: inputSearch,
+                        controller: inputGivePoint,
                         decoration: InputDecoration(
-                          hintText: '지급할 포인트를 입력하세요.',
+                          hintText: '지급할 포인트',
                           border: OutlineInputBorder(borderSide: BorderSide(width: 1)),
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48))),
                         ),
@@ -120,7 +175,7 @@ class GivePoint extends StatelessWidget {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(8), bottomRight: Radius.circular(8)),
                           color: Color(0xff205B48),
                         ),
                         child: Center(child: Text('지급', style: TextStyle(color: Colors.white),)),
@@ -139,10 +194,9 @@ class GivePoint extends StatelessWidget {
                     Flexible(
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        // controller: inputSearch,
+                        controller: inputUsePoint,
                         decoration: InputDecoration(
-                          hintText: '사용할 포인트를 입력하세요.',
+                          hintText: '사용할 포인트',
                           border: OutlineInputBorder(borderSide: BorderSide(width: 1)),
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color(0xff205B48))),
                         ),
@@ -153,7 +207,7 @@ class GivePoint extends StatelessWidget {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(8), bottomRight: Radius.circular(8)),
                           color: Color(0xff205B48),
                         ),
                         child: Center(child: Text('사용', style: TextStyle(color: Colors.white),)),

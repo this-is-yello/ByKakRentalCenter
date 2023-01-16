@@ -54,10 +54,8 @@ class _LogInState extends State<LogIn> {
   var inputPassWord = TextEditingController();
 
   inputAccountState() async{
-    if(inputId == null || inputPassWord == null) {
+    if(inputId.text == '' || inputPassWord.text == '') {
       print('아이디, 비밀번호를 입력해라.');
-    } else if (auth.currentUser?.uid == null) {
-      print('아이디, 비밀번호를 확인해라.');
     } else {
       print(auth.currentUser?.displayName.toString());
       print(auth.currentUser?.email);
@@ -66,25 +64,6 @@ class _LogInState extends State<LogIn> {
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => WebMain()), (route) => false);
     }
   }
-
-
-  getData() async{
-    try {
-      // var resultAccount = await auth.createUserWithEmailAndPassword(
-      //     email: "idc1234@test.com",
-      //     password: "123456",
-      // );
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
 
   @override
   Widget build(BuildContext context) {

@@ -47,13 +47,7 @@ class Search extends StatelessWidget {
               children: [
                 Container(
                   child: InkWell(
-                    child: Center(child: Text('자켓', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
-                    onTap: () {},
-                  ),
-                ),
-                Container(
-                  child: InkWell(
-                    child: Center(child: Text('바지', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
+                    child: Center(child: Text('자켓 / 바지', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
                     onTap: () {},
                   ),
                 ),

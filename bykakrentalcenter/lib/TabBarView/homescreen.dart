@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:bykakrentalcenter/main.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bykakrentalcenter/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:bykakrentalcenter/Rent/meetingrent.dart';
 import 'package:bykakrentalcenter/Rent/weddingrent.dart';
 import 'package:bykakrentalcenter/Rent/product.dart';
+
+final auth = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,6 +23,37 @@ class _HomeState extends State<Home> {
   var mainColor = Color(0xff205B48);
   var blackColor = Color(0xff1E1E1E);
   var whiteColor = Colors.white;
+
+  var dbCompany;
+  var dbRentValue;
+  var dbColor;
+  var dbName;
+  var dbPrice;
+  var productLength;
+
+  int i = 0;
+
+  productCheck() async{
+
+    var checkProduct = await firestore.collection('product').get();
+    productLength = checkProduct.docs.length;
+
+    for (i = 0; i <= checkProduct.docs.length-1; i++) {
+        setState(() {
+          dbCompany = checkProduct.docs;//[i]['company'];
+          dbRentValue = checkProduct.docs;//[i]['rentValue'];
+          dbColor = checkProduct.docs;//[i]['color'];
+          dbName = checkProduct.docs;//[i]['name'];
+          dbPrice = checkProduct.docs;//[i]['price'];
+        });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    productCheck();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +161,9 @@ class _HomeState extends State<Home> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('김주현바이각', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                                Text('[대여종류] 상품명', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-                                Text('50,000원', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))
+                                Text(dbCompany[i]['company'].toString(), style: TextStyle(fontSize: 14, color: Colors.grey)),
+                                Text('[${dbRentValue[i]['rentValue'].toString()}]' + '${dbColor[i]['color'].toString()}' + '${dbName[i]['name'].toString()}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                                Text('50000원', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))
                               ]
                             ),
                           ),
@@ -150,7 +187,7 @@ class _HomeState extends State<Home> {
                 },
               ),
             ),
-            childCount: 5
+            childCount: productLength
           )
         )
       ],

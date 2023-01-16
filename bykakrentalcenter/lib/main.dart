@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:bykakrentalcenter/promotionscreen.dart';
-import 'package:bykakrentalcenter/Account/login.dart';
+import 'package:bykakrentalcenter/FromMyPage/userinfo.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
