@@ -57,7 +57,7 @@ class _ProfileModifyState extends State<ProfileModify> {
 
     var checkModify = await firestore.collection('account').get();
 
-    for (int i = 0; i <= checkModify.docs.length-1; i++) {
+    for (int i = 0; i < checkModify.docs.length; i++) {
       if (checkModify.docs[i]['id'] == auth.currentUser?.email) {
         setState(() {
           dbPhone = checkModify.docs[i]['phone'];

@@ -180,12 +180,22 @@ class MemberDetail extends StatefulWidget {
 
 class _MemberDetailState extends State<MemberDetail> {
 
-  var inputGivePoint;
+  var inputGivePoint = TextEditingController();
   var inputGivePointContent = TextEditingController();
-  var inputUsePoint;
+  var inputUsePoint = TextEditingController();
 
-  addPoint() {
-    // firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({'givePoint' : {3 : inputGivePointContent.text}, 'giveContent' : {3 : inputGivePoint}});
+  addPoint() async{
+    var inputPointList = await firestore.collection('account').doc(widget.dbName[widget.i]['id']).get();
+    List inputGivePointList = inputPointList['givepoint'];
+    List inputGivePointContentList = inputPointList['givepointcontent'];
+
+    inputGivePointList.add(int.parse(inputGivePoint.text));
+    inputGivePointContentList.add(inputGivePointContent.text);
+
+    firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepoint" : inputGivePointList});
+    firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepointcontent" : inputGivePointContentList});
+    firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepointdate" : FieldValue.arrayUnion([DateTime.now()])});
+
   }
 
   @override
@@ -339,7 +349,11 @@ class _MemberDetailState extends State<MemberDetail> {
                                                 child: Center(child: Text('지급', style: TextStyle(color: Colors.white),)),
                                               ),
                                               onTap: () {
-                                                addPoint();
+                                                if(inputGivePoint.text != '' || inputGivePointContent.text != '') {
+                                                  addPoint();
+                                                } else {
+                                                  print('error');
+                                                }
                                               },
                                             )
                                           ],

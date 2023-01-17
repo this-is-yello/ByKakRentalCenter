@@ -215,7 +215,9 @@ class _LogInState extends State<LogIn> {
                       borderRadius: BorderRadius.circular(30)
                     ),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () async{
+                        
+                      },
                     ),
                   ),
                   Container(

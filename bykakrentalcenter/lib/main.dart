@@ -1,9 +1,11 @@
+import 'package:bykakrentalcenter/Account/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 import 'package:bykakrentalcenter/promotionscreen.dart';
 import 'package:bykakrentalcenter/FromMyPage/userinfo.dart';
@@ -14,6 +16,8 @@ final firestore = FirebaseFirestore.instance;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  // KakaoSdk.init(nativeAppKey: 'c9a3cb3dac96e754b9b895ee6de98028', loggingEnabled: true);
   
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

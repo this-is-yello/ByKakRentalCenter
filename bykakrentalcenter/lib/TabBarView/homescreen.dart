@@ -38,13 +38,13 @@ class _HomeState extends State<Home> {
     var checkProduct = await firestore.collection('product').get();
     productLength = checkProduct.docs.length;
 
-    for (i = 0; i <= checkProduct.docs.length-1; i++) {
+    for (i = 0; i < productLength; i++) {
         setState(() {
-          dbCompany = checkProduct.docs;//[i]['company'];
-          dbRentValue = checkProduct.docs;//[i]['rentValue'];
-          dbColor = checkProduct.docs;//[i]['color'];
-          dbName = checkProduct.docs;//[i]['name'];
-          dbPrice = checkProduct.docs;//[i]['price'];
+          dbCompany = checkProduct.docs[i]['company'].toString();
+          dbRentValue = checkProduct.docs[i]['rentValue'].toString();
+          dbColor = checkProduct.docs[i]['color'].toString();
+          dbName = checkProduct.docs[i]['name'].toString();
+          dbPrice = checkProduct.docs[i]['price'];
         });
     }
   }
@@ -150,24 +150,29 @@ class _HomeState extends State<Home> {
                   children: [
                     Container(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            color: mainColor,
+                          Row(
+                            children: [
+                              Container(
+                                width: 80,
+                                height: 80,
+                                color: mainColor,
+                              ),
+                              Padding(padding: EdgeInsets.all(8)),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(dbCompany.toString(), style: TextStyle(fontSize: 14, color: Colors.grey)),
+                                    Text('[$dbRentValue] ' + '$dbColor ' + '$dbName', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                                    Text('$dbPrice' + '원', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))
+                                  ]
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(padding: EdgeInsets.all(8)),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(dbCompany[i]['company'].toString(), style: TextStyle(fontSize: 14, color: Colors.grey)),
-                                Text('[${dbRentValue[i]['rentValue'].toString()}]' + '${dbColor[i]['color'].toString()}' + '${dbName[i]['name'].toString()}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-                                Text('50000원', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))
-                              ]
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 120)),
+                          // Padding(padding: EdgeInsets.only(left: 50)),
                           IconButton(
                             icon: Icon(Icons.favorite_border),
                             onPressed: () {},
