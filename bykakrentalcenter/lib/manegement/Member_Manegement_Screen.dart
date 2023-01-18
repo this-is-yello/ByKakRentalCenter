@@ -195,8 +195,9 @@ class _MemberDetailState extends State<MemberDetail> {
     firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepoint" : inputGivePointList});
     firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepointcontent" : inputGivePointContentList});
     firestore.collection('account').doc(widget.dbName[widget.i]['id']).update({"givepointdate" : FieldValue.arrayUnion([DateTime.now()])});
-
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
