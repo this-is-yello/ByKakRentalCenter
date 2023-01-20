@@ -114,11 +114,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: MediaQuery.of(context).size.width < 640 ? PhoneFirstContents() : MediaQuery.of(context).size.width < 1080 ? TabletFirstContents() : WebFirstContents()
                 ),
               ),
-            Container(
-              child: Center(
-                child: Container(),
-              ),
-            )
+              Container(
+                child: Center(
+                  child: WebSecondContents(),
+                ),
+              )
             ],
           )
         );
@@ -259,8 +259,22 @@ class MainBanner extends StatelessWidget {
 
 
 // -------------------------------------------------- Content-1-Phone ---------------------------------------------------
-class PhoneFirstContents extends StatelessWidget {
+class PhoneFirstContents extends StatefulWidget {
   const PhoneFirstContents({super.key});
+
+  @override
+  State<PhoneFirstContents> createState() => _PhoneFirstContentsState();
+}
+
+class _PhoneFirstContentsState extends State<PhoneFirstContents> {
+
+  changeRowColumn() {
+    if(MediaQuery.of(context).size.width < 1080) {
+      return Column();
+    } else {
+      return Row();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -595,3 +609,465 @@ class WebFirstContents extends StatelessWidget {
 }
 
 
+// -------------------------------------------------- Content-2-Phone ---------------------------------------------------
+class PhoneSecondContents extends StatefulWidget {
+  const PhoneSecondContents({super.key});
+
+  @override
+  State<PhoneSecondContents> createState() => _PhoneSecondContentsState();
+}
+
+class _PhoneSecondContentsState extends State<PhoneSecondContents> {
+
+  fontSizeH2(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 20;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 24;
+    } else {
+      return 32;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: Text('인기상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
+              ),
+              Padding(padding: EdgeInsets.all(8)),
+              Container(
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: 42.w,
+                    viewportFraction: 1,
+                    scrollDirection: Axis.horizontal,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                  ),
+                  items: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF205B48),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                ),
+                              ),
+                              Container(
+                                width: 30.w,
+                                height: 10.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 4),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {},
+                        ),
+                        InkWell(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF205B48),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                ),
+                              ),
+                              Container(
+                                width: 30.w,
+                                height: 10.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 4),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {},
+                        ),
+                        InkWell(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 30.w,
+                                height: 30.w,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF205B48),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                ),
+                              ),
+                              Container(
+                                width: 30.w,
+                                height: 10.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 4,
+                                      offset: Offset(0, 4),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          onTap: () {},
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+// -------------------------------------------------- Content-2-Tablet ---------------------------------------------------
+class TabletSecondContents extends StatefulWidget {
+  const TabletSecondContents({super.key});
+
+  @override
+  State<TabletSecondContents> createState() => _TabletSecondContentsState();
+}
+
+class _TabletSecondContentsState extends State<TabletSecondContents> {
+
+  fontSizeH2(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 20;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 24;
+    } else {
+      return 32;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 560,
+          ),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text('인기상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
+                ),
+                Padding(padding: EdgeInsets.all(8)),
+                Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 228,
+                      viewportFraction: 1,
+                      scrollDirection: Axis.horizontal,
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                    ),
+                    items: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 160,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF205B48),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                  ),
+                                ),
+                                Container(
+                                  width: 160,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                          InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 160,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF205B48),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                  ),
+                                ),
+                                Container(
+                                  width: 160,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                          InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 160,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF205B48),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                  ),
+                                ),
+                                Container(
+                                  width: 160,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+// -------------------------------------------------- Content-2-Web ---------------------------------------------------
+class WebSecondContents extends StatefulWidget {
+  const WebSecondContents({super.key});
+
+  @override
+  State<WebSecondContents> createState() => _WebSecondContentsState();
+}
+
+class _WebSecondContentsState extends State<WebSecondContents> {
+
+  fontSizeH2(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 20;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 24;
+    } else {
+      return 32;
+    }
+  }
+
+  paddingSet(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 16;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 20;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 1080,
+          ),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text('인기상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
+                ),
+                Padding(padding: EdgeInsets.all(8)),
+                Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      // height: 428,
+                      viewportFraction: 1,
+                      scrollDirection: Axis.horizontal,
+                      enlargeCenterPage: true,
+                      // autoPlay: true,
+                    ),
+                    items: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 20.w,
+                                  height: 20.w,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF205B48),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                          InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 20.w,
+                                  height: 20.w,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF205B48),
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {},
+                          ),
+                          // InkWell(
+                          //   child: Column(
+                          //     children: [
+                          //       Container(
+                          //         width: 20.w,
+                          //         height: 20.w,
+                          //         decoration: BoxDecoration(
+                          //           color: Color(0xFF205B48),
+                          //           borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                          //         ),
+                          //       ),
+                          //       Container(
+                          //         width: 20.w,
+                          //         height: 100,
+                          //         decoration: BoxDecoration(
+                          //           color: Colors.white,
+                          //           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                          //           boxShadow: [
+                          //             BoxShadow(
+                          //               color: Colors.grey.withOpacity(0.5),
+                          //               blurRadius: 4,
+                          //               offset: Offset(0, 4),
+                          //             )
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          //   onTap: () {},
+                          // )
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
