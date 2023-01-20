@@ -3,10 +3,10 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
-import 'package:bykakrentalcenter/Booking/bookdetail.dart';
-import 'package:bykakrentalcenter/Booking/bookcomplete.dart';
+import 'package:bykakrentalcenter/booking/Booked_Detail_Screen.dart';
+import 'package:bykakrentalcenter/booking/Book_Complete_Screen.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 import 'package:bykakrentalcenter/Rent/Period.dart';
 
 class ClickGoToBook extends StatelessWidget {

@@ -9,9 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:bykakrentalcenter/main.dart';
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/promotionscreen.dart';
-import 'package:bykakrentalcenter/Account/signup.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+import 'package:bykakrentalcenter/Promotion_Screen.dart';
+import 'package:bykakrentalcenter/account/SignUp_Screen.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;

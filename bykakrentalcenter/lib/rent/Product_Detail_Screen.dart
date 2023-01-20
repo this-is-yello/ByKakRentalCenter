@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/inquiry.dart';
-import 'package:bykakrentalcenter/TabBarView/shoppingbag.dart';
-import 'package:bykakrentalcenter/Booking/gotobook.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+import 'package:bykakrentalcenter/Iinquiry_Screen.dart';
+import 'package:bykakrentalcenter/main/Shopping_Bag_Screen.dart';
+import 'package:bykakrentalcenter/booking/Go_To_Book_Screen.dart';
 
 class ClickProduct extends StatelessWidget {
   const ClickProduct({super.key});
@@ -53,7 +53,7 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Color(0xFFEEEEEE),
       appBar: AppBar(
         title: Text('상품상세', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
@@ -85,7 +85,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('김주현바이각', style: TextStyle(color: Colors.grey)),
+                                  Text('김주현바이각', style: TextStyle(color: Color(0xFF9E9E9E))),
                                   Padding(padding: EdgeInsets.all(4)),
                                   Text('[대여종류] 상품이름', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
                                   Padding(padding: EdgeInsets.all(4)),

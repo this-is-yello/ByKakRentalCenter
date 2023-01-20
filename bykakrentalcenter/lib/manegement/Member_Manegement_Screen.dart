@@ -7,8 +7,8 @@ import 'package:bykakrentalcenter/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/FromMyPage/givepoint.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+// import 'package:bykakrentalcenter/user/Give_Point_Screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:intl/intl.dart';

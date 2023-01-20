@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/TabBarView/bookhistory.dart';
-import 'package:bykakrentalcenter/promotionscreen.dart';
-import 'package:bykakrentalcenter/Booking/bookdetail.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+import 'package:bykakrentalcenter/main/Book_History_Screen.dart';
+import 'package:bykakrentalcenter/Promotion_Screen.dart';
+import 'package:bykakrentalcenter/booking/Booked_Detail_Screen.dart';
 
 class ClickBookComplete extends StatelessWidget {
   const ClickBookComplete({super.key});

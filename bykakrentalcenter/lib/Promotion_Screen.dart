@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bykakrentalcenter/tabbarview.dart';
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/Tab_Bar_View_Screen.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 
 
 class PromotionScreen extends StatelessWidget {

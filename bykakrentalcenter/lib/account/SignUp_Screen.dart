@@ -1,12 +1,12 @@
-import 'package:bykakrentalcenter/Account/login.dart';
-import 'package:bykakrentalcenter/promotionscreen.dart';
+import 'package:bykakrentalcenter/account/LogIn_Screen.dart';
+import 'package:bykakrentalcenter/Promotion_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bykakrentalcenter/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/Booking/bookdetail.dart';
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/booking/Booked_Detail_Screen.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 
 class ClickBookHistory extends StatelessWidget {
   const ClickBookHistory({super.key});

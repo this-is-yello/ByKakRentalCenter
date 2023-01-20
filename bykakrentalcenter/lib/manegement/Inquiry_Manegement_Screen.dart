@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 
 class ClickInquiryManege extends StatelessWidget {
   const ClickInquiryManege({super.key});

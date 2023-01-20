@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/promotionscreen.dart';
-import 'package:bykakrentalcenter/TabBarView/homescreen.dart';
-import 'package:bykakrentalcenter/TabBarView/searchscreen.dart';
-import 'package:bykakrentalcenter/TabBarView/mypage.dart';
-import 'package:bykakrentalcenter/TabBarView/bookhistory.dart';
-import 'package:bykakrentalcenter/TabBarView/shoppingbag.dart';
-import 'package:bykakrentalcenter/inquiry.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+import 'package:bykakrentalcenter/Promotion_Screen.dart';
+import 'package:bykakrentalcenter/main/Home_Screen.dart';
+import 'package:bykakrentalcenter/main/Search_Screen.dart';
+import 'package:bykakrentalcenter/main/My_Page_Screen.dart';
+import 'package:bykakrentalcenter/main/Book_History_Screen.dart';
+import 'package:bykakrentalcenter/main/Shopping_Bag_Screen.dart';
+import 'package:bykakrentalcenter/Iinquiry_Screen.dart';
 
 class TabBarScreen extends StatefulWidget {
   const TabBarScreen({super.key});

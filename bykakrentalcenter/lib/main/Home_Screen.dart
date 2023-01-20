@@ -4,9 +4,9 @@ import 'package:bykakrentalcenter/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:bykakrentalcenter/Rent/meetingrent.dart';
+import 'package:bykakrentalcenter/Rent/Value_Rent_Screen.dart';
 import 'package:bykakrentalcenter/Rent/weddingrent.dart';
-import 'package:bykakrentalcenter/Rent/product.dart';
+import 'package:bykakrentalcenter/Rent/Product_Detail_Screen.dart';
 
 final auth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;

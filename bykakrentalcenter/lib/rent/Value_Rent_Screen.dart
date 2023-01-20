@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
 import 'package:bykakrentalcenter/Rent/Period.dart';
-import 'package:bykakrentalcenter/Rent/product.dart';
+import 'package:bykakrentalcenter/Rent/Product_Detail_Screen.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
 class ClickMeetingRent extends StatelessWidget {

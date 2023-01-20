@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:bykakrentalcenter/todownload.dart';
-import 'package:bykakrentalcenter/Booking/gotobook.dart';
+import 'package:bykakrentalcenter/To_Download_Screen.dart';
+import 'package:bykakrentalcenter/booking/Go_To_Book_Screen.dart';
 
 class ClickShoppingBag extends StatelessWidget {
   const ClickShoppingBag({super.key});
