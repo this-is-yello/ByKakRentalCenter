@@ -36,30 +36,6 @@ void main() async{
     ),
     
   );
-  // runApp(
-  //   MaterialApp(
-  //     title: '바이각 슈트 렌탈센터',
-  //     debugShowCheckedModeBanner: false,
-  //     theme: ThemeData(
-  //       fontFamily: 'Lineseed',
-  //       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-  //         backgroundColor: Colors.white,
-  //         selectedItemColor: Color(0xFF205B48),
-  //         unselectedItemColor: Colors.grey,
-  //         showUnselectedLabels: true,
-  //       ),
-  //     ),
-  //     home: WebMain(),
-  //     localizationsDelegates: [
-  //       GlobalMaterialLocalizations.delegate,
-  //       GlobalWidgetsLocalizations.delegate
-  //     ],
-  //     supportedLocales: [
-  //       const Locale('en', 'US'),
-  //       const Locale('ko', 'KO'),
-  //     ],
-  //   )
-  // );
 }
 
 // -------------------------------------------------- HomeScreen ---------------------------------------------------
@@ -72,27 +48,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  bool phoneWidth = false;
-  bool tablteWidth = false;
-
-  widthState() {
-    if(MediaQuery.of(context).size.width < 640) {
-      setState(() {
-        phoneWidth = true;
-        tablteWidth = false;
-      });
-      print('$phoneWidth' + '$tablteWidth');
-    } else if (MediaQuery.of(context).size.width < 1080) {
-      setState(() {  
-        phoneWidth = false;
-        tablteWidth = true;
-      });
-      print('$phoneWidth' + '$tablteWidth');
-    }
-  }
+  bool _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
+
+    Future.delayed(Duration(seconds: 1),
+    () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Scaffold(
@@ -101,24 +68,47 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: Color(0xFF1E1E1E), size: 28),
             title: Center(
-              child: MediaQuery.of(context).size.width < 640 ? PhoneAppBar() : MediaQuery.of(context).size.width < 1080 ? TabletAppBar() : WebAppBar()
+              child: MediaQuery.of(context).size.width < 640 ? PhoneAppBar() : WideAppBar()
             ),
           ),
-          body: ListView(
+          body: _isLoading ? Center(
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(
+                color: Color(0xFF205B48),
+              ),
+            ),
+          ) : ListView(
             children: [
               Container(
                 child: Center(child: MainBanner()),
               ),
               Container(
                 child: Center(
-                  child: MediaQuery.of(context).size.width < 640 ? PhoneFirstContents() : MediaQuery.of(context).size.width < 1080 ? TabletFirstContents() : WebFirstContents()
+                  child: FirstContents()
                 ),
               ),
               Container(
                 child: Center(
-                  child: WebSecondContents(),
+                  child: SecondContents(),
                 ),
-              )
+              ),
+              Container(
+                child: Center(
+                  child: ThirdContents(),
+                ),
+              ),
+              Container(
+                child: Center(
+                  child: FourthContents(),
+                ),
+              ),
+              Container(
+                child: Center(
+                  child: Footer(),
+                ),
+              ),
             ],
           )
         );
@@ -151,59 +141,29 @@ class PhoneAppBar extends StatelessWidget {
     );
   }
 }
-// -------------------------------------------------- AppBar_Tablet ---------------------------------------------------
-class TabletAppBar extends StatelessWidget {
-  const TabletAppBar({super.key});
+// -------------------------------------------------- AppBar_Wide ---------------------------------------------------
+class WideAppBar extends StatefulWidget {
+  const WideAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: 560,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('순양 렌탈센터', style: TextStyle(color: Color(0xFF1E1E1E), fontWeight: FontWeight.w700)),
-          Container(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {},
-                ),
-                TextButton(
-                  child: Text('예약내역', style: TextStyle(fontSize: 16, color: Color(0xFF1E1E1E), fontWeight: FontWeight.w700)),
-                  onPressed: () {},
-                ),
-                TextButton(
-                  child: Text('마이페이지', style: TextStyle(fontSize: 16, color: Color(0xFF1E1E1E), fontWeight: FontWeight.w700)),
-                  onPressed: () {},
-                ),
-                TextButton(
-                  child: Text('로그인', style: TextStyle(fontSize: 16, color: Color(0xFF1E1E1E), fontWeight: FontWeight.w700)),
-                  onPressed: () {},
-                ),
-              ]
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  State<WideAppBar> createState() => _WideAppBarState();
 }
-// -------------------------------------------------- AppBar_Web ---------------------------------------------------
-class WebAppBar extends StatelessWidget {
-  const WebAppBar({super.key});
+
+class _WideAppBarState extends State<WideAppBar> {
+  
+  widgetSize(c) {
+    if(MediaQuery.of(context).size.width < 1080) {
+      return 560;
+    } else {
+      return 1080;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 560,
-        maxWidth: 1080,
-      ),
+    return Container(
+      padding: EdgeInsets.only(left: 16, right: 16),
+      width: widgetSize(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -248,7 +208,7 @@ class MainBanner extends StatelessWidget {
       builder: (context, orientation, screenType) {
         return Container(
           width: 100.w,
-          height: 36.w,
+          height: 40.w,
           color: Color(0xFF205B48),
           child: Center(child: Text('K!mjuhyeon by 覺 BANNER'),),
         );
@@ -258,21 +218,31 @@ class MainBanner extends StatelessWidget {
 }
 
 
-// -------------------------------------------------- Content-1-Phone ---------------------------------------------------
-class PhoneFirstContents extends StatefulWidget {
-  const PhoneFirstContents({super.key});
+// -------------------------------------------------- Content-1 ---------------------------------------------------
+class FirstContents extends StatefulWidget {
+  const FirstContents({super.key});
 
   @override
-  State<PhoneFirstContents> createState() => _PhoneFirstContentsState();
+  State<FirstContents> createState() => _FirstContentsState();
 }
 
-class _PhoneFirstContentsState extends State<PhoneFirstContents> {
+class _FirstContentsState extends State<FirstContents> {
 
-  changeRowColumn() {
-    if(MediaQuery.of(context).size.width < 1080) {
-      return Column();
+  widgetSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 360;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 560;
     } else {
-      return Row();
+      return 1080;
+    }
+  }
+
+  paddingSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 8;
+    } else {
+      return 16;
     }
   }
 
@@ -281,118 +251,7 @@ class _PhoneFirstContentsState extends State<PhoneFirstContents> {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              InkWell(
-                child: Container(
-                  width: 100.w,
-                  height: 80,
-                  child: Text('대여기간'),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        blurRadius: 4,
-                        offset: Offset(0, 4), 
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {},
-              ),
-              Padding(padding: EdgeInsets.all(8)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: InkWell(
-                      child: Container(
-                        height: 80,
-                        child: Text('대여형태'),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              blurRadius: 4,
-                              offset: Offset(0, 4), 
-                            )
-                          ],
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.all(8)),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: InkWell(
-                      child: Container(
-                        height: 80,
-                        child: Text('상담시간'),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              blurRadius: 4,
-                              offset: Offset(0, 4), 
-                            )
-                          ],
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.all(8)),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: InkWell(
-                      child: Container(
-                        height: 80,
-                        child: Text('검색'),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF205B48),
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              blurRadius: 4,
-                              offset: Offset(0, 4), 
-                            )
-                          ],
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  ),
-                ],
-              )
-            ],
-          )
-        );
-      }
-    );
-  }
-}
-// -------------------------------------------------- Content-1-Tablet ---------------------------------------------------
-class TabletFirstContents extends StatelessWidget {
-  const TabletFirstContents({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 560,
-          ),
+          width: widgetSize(context),
           child: Container(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -401,7 +260,16 @@ class TabletFirstContents extends StatelessWidget {
                   child: Container(
                     width: 100.w,
                     height: 90,
-                    child: Text('대여기간'),
+                    padding: EdgeInsets.all(paddingSize(context)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('대여기간'),
+                        Padding(padding: EdgeInsets.only(top: paddingSize(context))),
+                        Text('YY.MM.DD - YY.MM.DD')
+                      ],
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -425,7 +293,16 @@ class TabletFirstContents extends StatelessWidget {
                       child: InkWell(
                         child: Container(
                           height: 90,
-                          child: Text('대여형태'),
+                          padding: EdgeInsets.all(paddingSize(context)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('대여형태'),
+                              Padding(padding: EdgeInsets.only(top: paddingSize(context))),
+                              Text('예복대여')
+                            ],
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
@@ -447,31 +324,18 @@ class TabletFirstContents extends StatelessWidget {
                       child: InkWell(
                         child: Container(
                           height: 90,
-                          child: Text('상담시간'),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 4,
-                                offset: Offset(0, 4), 
-                              )
+                          padding: EdgeInsets.all(paddingSize(context)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('상담시간'),
+                              Padding(padding: EdgeInsets.only(top: paddingSize(context))),
+                              Text('YY.MM.DD / HH.MM')
                             ],
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.all(8)),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: InkWell(
-                        child: Container(
-                          height: 90,
-                          child: Text('검색'),
                           decoration: BoxDecoration(
-                            color: Color(0xFF205B48),
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
@@ -486,119 +350,27 @@ class TabletFirstContents extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
-              ],
-            ),
-          ),
-        );
-      }
-    );
-  }
-}
-// -------------------------------------------------- Content-1-Web ---------------------------------------------------
-class WebFirstContents extends StatelessWidget {
-  const WebFirstContents({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 1080,
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      child: Text('대여기간'),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 4,
-                            offset: Offset(0, 4), 
-                          )
-                        ],
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
                 ),
                 Padding(padding: EdgeInsets.all(8)),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      child: Text('대여형태'),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 4,
-                            offset: Offset(0, 4), 
-                          )
-                        ],
-                      ),
+                InkWell(
+                  child: Container(
+                    width: 100.w,
+                    height: 60,
+                    child: Center(child: Text('검색', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700))),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF205B48),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          blurRadius: 4,
+                          offset: Offset(0, 4), 
+                        )
+                      ],
                     ),
-                    onTap: () {},
                   ),
+                  onTap: () {},
                 ),
-                Padding(padding: EdgeInsets.all(8)),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      child: Text('상담시간'),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 4,
-                            offset: Offset(0, 4), 
-                          )
-                        ],
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                ),
-                Padding(padding: EdgeInsets.all(8)),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      child: Text('검색'),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF205B48),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 4,
-                            offset: Offset(0, 4), 
-                          )
-                        ],
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                )
               ],
             ),
           ),
@@ -609,15 +381,15 @@ class WebFirstContents extends StatelessWidget {
 }
 
 
-// -------------------------------------------------- Content-2-Phone ---------------------------------------------------
-class PhoneSecondContents extends StatefulWidget {
-  const PhoneSecondContents({super.key});
+// -------------------------------------------------- Content-2 ---------------------------------------------------
+class SecondContents extends StatefulWidget {
+  const SecondContents({super.key});
 
   @override
-  State<PhoneSecondContents> createState() => _PhoneSecondContentsState();
+  State<SecondContents> createState() => _SecondContentsState();
 }
 
-class _PhoneSecondContentsState extends State<PhoneSecondContents> {
+class _SecondContentsState extends State<SecondContents> {
 
   fontSizeH2(c) {
     if(MediaQuery.of(context).size.width < 640) {
@@ -629,12 +401,40 @@ class _PhoneSecondContentsState extends State<PhoneSecondContents> {
     }
   }
 
+  fontSizeSub(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 14;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 16;
+    } else {
+      return 20;
+    }
+  }
+
+  widgetSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 360;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 560;
+    } else {
+      return 1080;
+    }
+  }
+
+  paddingSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 8;
+    } else {
+      return 16;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return Container(
-          padding: EdgeInsets.all(16),
+          // padding: EdgeInsets.all(16),
           child: Column(
             children: [
               Container(
@@ -643,10 +443,12 @@ class _PhoneSecondContentsState extends State<PhoneSecondContents> {
               ),
               Padding(padding: EdgeInsets.all(8)),
               Container(
+                width: widgetSize(context),
+                padding: EdgeInsets.all(16),
                 child: CarouselSlider(
                   options: CarouselOptions(
-                    height: 42.w,
-                    viewportFraction: 1,
+                    // height: 30.w,
+                    viewportFraction: 0.45,
                     scrollDirection: Axis.horizontal,
                     enlargeCenterPage: true,
                     autoPlay: true,
@@ -655,96 +457,49 @@ class _PhoneSecondContentsState extends State<PhoneSecondContents> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 30.w,
-                                height: 30.w,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF205B48),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    //height: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF205B48),
+                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                width: 30.w,
-                                height: 10.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
-                                    )
-                                  ],
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(paddingSize(context)),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('상품명', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF1E1E1E))),
+                                      Padding(padding: EdgeInsets.all(2)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('대여샵', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF9E9E9E))),
+                                          Text('50000원', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF205B48), fontWeight: FontWeight.w700)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            onTap: () {},
                           ),
-                          onTap: () {},
                         ),
-                        InkWell(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 30.w,
-                                height: 30.w,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF205B48),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                ),
-                              ),
-                              Container(
-                                width: 30.w,
-                                height: 10.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          onTap: () {},
-                        ),
-                        InkWell(
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 30.w,
-                                height: 30.w,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF205B48),
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                ),
-                              ),
-                              Container(
-                                width: 30.w,
-                                height: 10.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          onTap: () {},
-                        )
                       ],
                     )
                   ],
@@ -757,15 +512,17 @@ class _PhoneSecondContentsState extends State<PhoneSecondContents> {
     );
   }
 }
-// -------------------------------------------------- Content-2-Tablet ---------------------------------------------------
-class TabletSecondContents extends StatefulWidget {
-  const TabletSecondContents({super.key});
+
+
+// -------------------------------------------------- Content-3 ---------------------------------------------------
+class ThirdContents extends StatefulWidget {
+  const ThirdContents({super.key});
 
   @override
-  State<TabletSecondContents> createState() => _TabletSecondContentsState();
+  State<ThirdContents> createState() => _ThirdContentsState();
 }
 
-class _TabletSecondContentsState extends State<TabletSecondContents> {
+class _ThirdContentsState extends State<ThirdContents> {
 
   fontSizeH2(c) {
     if(MediaQuery.of(context).size.width < 640) {
@@ -777,149 +534,130 @@ class _TabletSecondContentsState extends State<TabletSecondContents> {
     }
   }
 
+  fontSizeSub(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 14;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 16;
+    } else {
+      return 20;
+    }
+  }
+
+  widgetSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 360;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 560;
+    } else {
+      return 1080;
+    }
+  }
+
+  paddingSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 8;
+    } else {
+      return 16;
+    }
+  }
+  gridHeight(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 780;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 1240;
+    } else {
+      return 1100;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 560,
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text('인기상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
-                ),
-                Padding(padding: EdgeInsets.all(8)),
-                Container(
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 228,
-                      viewportFraction: 1,
-                      scrollDirection: Axis.horizontal,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                    ),
-                    items: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 160,
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF205B48),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                  ),
-                                ),
-                                Container(
-                                  width: 160,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onTap: () {},
-                          ),
-                          InkWell(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 160,
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF205B48),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                  ),
-                                ),
-                                Container(
-                                  width: 160,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onTap: () {},
-                          ),
-                          InkWell(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 160,
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF205B48),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                  ),
-                                ),
-                                Container(
-                                  width: 160,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            onTap: () {},
-                          )
-                        ],
-                      )
-                    ],
+        return Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: Text('패키지 상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
+              ),
+              Padding(padding: EdgeInsets.all(8)),
+              Container(
+                padding: EdgeInsets.all(16),
+                width: widgetSize(context),
+                height: gridHeight(context),
+                child: GridView.builder(
+                  itemCount: 6,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 1 / 1.5,
+                    crossAxisCount: MediaQuery.of(context).size.width < 1080 ? 2 : 3,
+                    mainAxisSpacing: paddingSize(context),
+                    crossAxisSpacing: paddingSize(context),
                   ),
-                )
-              ],
-            ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              //height: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF205B48),
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(paddingSize(context)),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('패키지 명', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF1E1E1E))),
+                                Padding(padding: EdgeInsets.all(2)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('대여샵', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF9E9E9E))),
+                                    Text('500000원', style: TextStyle(fontSize: fontSizeSub(context), color: Color(0xFF205B48), fontWeight: FontWeight.w700)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {},
+                    );
+                  }
+                ),
+              )
+            ],
           ),
         );
-      },
+      }
     );
   }
 }
-// -------------------------------------------------- Content-2-Web ---------------------------------------------------
-class WebSecondContents extends StatefulWidget {
-  const WebSecondContents({super.key});
+
+
+// -------------------------------------------------- Content-4 ---------------------------------------------------
+class FourthContents extends StatefulWidget {
+  const FourthContents({super.key});
 
   @override
-  State<WebSecondContents> createState() => _WebSecondContentsState();
+  State<FourthContents> createState() => _FourthContentsState();
 }
 
-class _WebSecondContentsState extends State<WebSecondContents> {
-
+class _FourthContentsState extends State<FourthContents> {
+  
   fontSizeH2(c) {
     if(MediaQuery.of(context).size.width < 640) {
       return 20;
@@ -930,11 +668,41 @@ class _WebSecondContentsState extends State<WebSecondContents> {
     }
   }
 
-  paddingSet(c) {
+  fontSizeSub(c) {
     if(MediaQuery.of(context).size.width < 640) {
-      return 16;
+      return 14;
     } else if (MediaQuery.of(context).size.width < 1080) {
+      return 16;
+    } else {
       return 20;
+    }
+  }
+
+  widgetSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 360;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 560;
+    } else {
+      return 1080;
+    }
+  }
+
+  paddingSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 8;
+    } else {
+      return 16;
+    }
+  }
+
+  boxSize(c) {
+    if(MediaQuery.of(context).size.width < 640) {
+      return 50;
+    } else if (MediaQuery.of(context).size.width < 1080) {
+      return 80;
+    } else {
+      return 120;
     }
   }
 
@@ -942,132 +710,124 @@ class _WebSecondContentsState extends State<WebSecondContents> {
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 1080,
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text('인기상품', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
-                ),
-                Padding(padding: EdgeInsets.all(8)),
-                Container(
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      // height: 428,
-                      viewportFraction: 1,
-                      scrollDirection: Axis.horizontal,
-                      enlargeCenterPage: true,
-                      // autoPlay: true,
+        return Container(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 20),
+                child: Text('서비스 이용안내', style: TextStyle(fontSize: fontSizeH2(context), fontWeight: FontWeight.w700)),
+              ),
+              Padding(padding: EdgeInsets.all(8)),
+              Container(
+                padding: EdgeInsets.all(16),
+                width: widgetSize(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: boxSize(context),
+                              height: boxSize(context),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1E1E1E),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(8)),
+                            Text('예약안내', style: TextStyle(fontSize: fontSizeSub(context)))
+                          ]
+                        ),
+                      ),
+                      onTap: () {},
                     ),
-                    items: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 20.w,
-                                  height: 20.w,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF205B48),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                  ),
-                                ),
-                                Container(
-                                  width: 20.w,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
+                    InkWell(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: boxSize(context),
+                              height: boxSize(context),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1E1E1E),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                            onTap: () {},
-                          ),
-                          InkWell(
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 20.w,
-                                  height: 20.w,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF205B48),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                                  ),
-                                ),
-                                Container(
-                                  width: 20.w,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            Padding(padding: EdgeInsets.all(8)),
+                            Text('대여/반납', style: TextStyle(fontSize: fontSizeSub(context)))
+                          ]
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                    InkWell(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: boxSize(context),
+                              height: boxSize(context),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1E1E1E),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                            onTap: () {},
-                          ),
-                          // InkWell(
-                          //   child: Column(
-                          //     children: [
-                          //       Container(
-                          //         width: 20.w,
-                          //         height: 20.w,
-                          //         decoration: BoxDecoration(
-                          //           color: Color(0xFF205B48),
-                          //           borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                          //         ),
-                          //       ),
-                          //       Container(
-                          //         width: 20.w,
-                          //         height: 100,
-                          //         decoration: BoxDecoration(
-                          //           color: Colors.white,
-                          //           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-                          //           boxShadow: [
-                          //             BoxShadow(
-                          //               color: Colors.grey.withOpacity(0.5),
-                          //               blurRadius: 4,
-                          //               offset: Offset(0, 4),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          //   onTap: () {},
-                          // )
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                            Padding(padding: EdgeInsets.all(8)),
+                            Text('취소/환불', style: TextStyle(fontSize: fontSizeSub(context)))
+                          ]
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                    InkWell(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: boxSize(context),
+                              height: boxSize(context),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1E1E1E),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(8)),
+                            Text('위약금', style: TextStyle(fontSize: fontSizeSub(context)))
+                          ]
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(20))
+            ],
           ),
         );
-      },
+      }
+    );
+  }
+}
+
+
+// -------------------------------------------------- MainFooter ---------------------------------------------------
+class Footer extends StatelessWidget {
+  const Footer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return Container(
+          width: 100.w,
+          height: 28.w,
+          color: Color(0xFF205B48),
+          child: Center(child: Text('K!mjuhyeon by 覺 FOOTER'),),
+        );
+      }
     );
   }
 }
